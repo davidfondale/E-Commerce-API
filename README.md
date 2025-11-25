@@ -31,35 +31,38 @@ The E Commerce API consists of the following 15 endpoints grouped first by CRUD 
 
 #### 5. '/orders/user/<user id>'
 
-> where <user id> is the id number of a specific user, returns all orders belonging to the user/customer currently stored in the database.
+> where <user id> is the id number of a specific user, returns all orders belonging to the user/customer currently stored in the database. No 
+additional data is required for this endpoint.
 
 #### 6. '/orders/<order id>/products'
 
-> where <order id> represents the id number of a specific order stored in the database, returns all of the information/details about the order currently stored in the database.
+> where <order id> represents the id number of a specific order stored in the database, returns the id numbers of all of the products for this
+order currently stored in the database.
 
 ### POST Endpoints:
 
 #### 7. '/new_user'
 
-> Adds a new user to the database. Requires a JSON formatted object including all non-optional user/customer information to be stored in the database. 
+> Adds a new user to the database. Requires a JSON formatted object including all non-optional user/customer information to be stored in the database. (See required format below)
 
 #### 8. '/products'
 
 > Adds a new product to the database. Requires a JSON formatted object including all non-optional product information to be stored in the database.
+(See required format below)
 
 #### 9. '/orders/<user id>'
 
-> where <user id> represents the id number of a user/customer currently stored in the database, adds the customer to the database. Requires a JSON formatted object including all non-optional user/customer information to be stored in the database.
+> where <user id> represents the id number of a user/customer currently stored in the database, adds the customer's order to the database. Requires a JSON formatted object including a list of all of the id numbers of all of the products to be included with the order. (See required format below)
 
 ### PUT Endpoints:
 
 #### 10. '/users/<user id>'
 
-> where <user id> represents the id number of a user/customer currently stored in the database, updates (replaces) any information stored in the database about the user which is sent to the endpoint with the request in the form of a JSON formatted (customer) object.
+> where <user id> represents the id number of a user/customer currently stored in the database, updates (replaces) any information stored in the database about the user which is sent to the endpoint with the request in the form of a JSON formatted (customer) object. (See required format below)
 
 #### 11. '/products/<product id>'
 
-> where <product id> represents the id number of a product currently stored in the databse, updates(replaces) any information stored in the database about the product which is sent to the endpoint with the request in the form of a JSON formatted (product) object.
+> where <product id> represents the id number of a product currently stored in the databse, updates(replaces) any information stored in the database about the product which is sent to the endpoint with the request in the form of a JSON formatted (product) object. (See required format below)
 
 #### 12. '/orders/<order id>/products/<product id>'
 
@@ -81,37 +84,41 @@ The E Commerce API consists of the following 15 endpoints grouped first by CRUD 
 
 ### JSON Formats for Database Objects
 
-> Following are the three object types which can be stored and or updated in the database and their corresponding JSON formats with data types for their properties. 
+> Following are the three object types which can be stored and or updated in the database and their corresponding JSON formats with data types for their properties. Note: Type definitions are shown here for informational purposes only, and are NOT required to be sent with the requst. Doing so
+will result in an error.
 
 #### User/Customer
 
 ```
 {
-    id: integer type (system generated)
-    name: string type (up to 30 character, required)
-    address: string type (up to 255 characters)
-    email: string type (up to 255 characters, required)
+    "id": n 
+    "name": "first and last name" (required)
+    "address": "address number, street, city, state, zip code" 
+    "email": "email address" (required)
 }
 
 ```
+
+where n is an integer, name is a string up to 30 characters long, address is a string up to 255 characters, and email is a string up to 255 characters.
+
 #### Order
 
 ```
 {
-    id: integer type (system generated)
-    order date: (MM/DD/YYYY)
-    user_id: integer type (required)
+    "products": [p1, p2,...pn]
 }
 
 ```
+where p1 is the id number of the first product to be included in the order and pn is the id number of the last product to be included in the new order.
 
 ### Product
 
 ```
 {
-    id: integer type (system generated)
-    product_name: (up to 255 characters, required)
-    price: floating (decimal) type, required
+    "id": n (system generated, required)
+    product_name: "name of product" (required)
+    price: n.nn (decimal) (required)
 }
 
 ```
+where product_name is a string up to 255 characters, and price is a decimal number with 2 decimal places as shown above.
